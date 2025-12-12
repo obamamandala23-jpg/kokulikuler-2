@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kearifan Lokal Indonesia</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet CSS untuk Peta -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Preload gambar kritis -->
+    <link rel="preload" href="https://www.nopostcode.com/wp-content/uploads/2022/08/Kelingking-Beach-Nusa-Penida-61-1.jpg" as="image" fetchpriority="high">
+    <link rel="preload" href="https://i.pinimg.com/736x/4c/7c/4b/4c7c4be6fa30c361f85909f00e16ceec.jpg" as="image">
+    <link rel="preload" href="https://binaryculture.net/wp-content/uploads/2023/12/Lanskap-alam.jpg" as="image">
+</head>
+<body>
+    <!-- Loading Screen HD -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="loading-content">
+            <div class="hd-spinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-dot"></div>
+            </div>
+            <div class="loading-text">Memuat Kearifan Nusantara...</div>
+            <div class="loading-progress">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header dengan Background HD Video -->
+    <header class="main-header" id="main-header">
+        <!-- Video Background -->
+        <div class="video-background">
+            <video autoplay muted loop playsinline id="heroVideo">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4" type="video/mp4">
+                Your browser does not support the video
+            </video>
+            <div class="video-overlay"></div>
+        </div>
+        
+        <div class="header-content">
+            <div class="header-badge">
+                <i class="fas fa-map-marked-alt"></i>
+                <span>Jelajahi Indonesia</span>
+            </div>
+            <h1 class="main-title">
+                <span class="title-line">Kearifan Lokal</span>
+                <span class="title-line">Indonesia</span>
+            </h1>
+            <p class="header-subtitle">Menjelajahi Keindahan Budaya dan Tradisi Nusantara</p>
+            <a href="#peta-section" class="scroll-down-btn">
+                <i class="fas fa-chevron-down"></i>
+            </a>
+        </div>
+        
+        <!-- Floating Navigation HD -->
+        <nav class="floating-nav">
+            <div class="nav-container">
+                <button class="nav-home active" data-target="home">
+                    <i class="fas fa-home"></i>
+                    <span>Beranda</span>
+                </button>
+                <button class="nav-region" data-target="sumatera-barat">
+                    <i class="fas fa-mosque"></i>
+                    <span>Minang</span>
+                </button>
+                <button class="nav-region" data-target="yogyakarta">
+                    <i class="fas fa-gem"></i>
+                    <span>Jogja</span>
+                </button>
+                <button class="nav-region" data-target="bali">
+                    <i class="fas fa-water"></i>
+                    <span>Bali</span>
+                </button>
+                <button class="nav-region" data-target="toraja">
+                    <i class="fas fa-mountain"></i>
+                    <span>Toraja</span>
+                </button>
+                <button class="nav-region" data-target="papua">
+                    <i class="fas fa-feather-alt"></i>
+                    <span>Papua</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Peta Interaktif HD Section -->
+        <section class="peta-section" id="peta-section">
+            <div class="section-header">
+                <h2 class="section-title">Pilih Wilayah di Peta</h2>
+                <p class="section-subtitle">Klik pada wilayah atau gunakan navigasi untuk menjelajahi kearifan lokalnya</p>
+            </div>
+            
+            <div class="peta-container">
+                <!-- Container untuk Peta Leaflet -->
+                <div id="indonesiaMap"></div>
+                
+                <div class="map-info">
+                    <div class="map-legend">
+                        <h4><i class="fas fa-key"></i> Legenda Peta</h4>
+                        <div class="legend-items">
+                            <div class="legend-item">
+                                <span class="legend-color" style="background-color: #2E8B57;"></span>
+                                <span>Sumatera Barat</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background-color: #FFD700;"></span>
+                                <span>Yogyakarta</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background-color: #DC143C;"></span>
+                                <span>Bali</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background-color: #8B4513;"></span>
+                                <span>Toraja</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-color" style="background-color: #1E90FF;"></span>
+                                <span>Papua</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="map-instructions">
+                        <i class="fas fa-mouse-pointer"></i>
+                        <p>Klik pada wilayah peta untuk melihat detail kearifan lokal</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Content Area HD -->
+        <section class="content-section">
+            <div class="content-container" id="content-area">
+                <!-- Konten akan dimuat secara dinamis di sini -->
+                <div class="welcome-content">
+                    <div class="welcome-icon">
+                        <i class="fas fa-compass"></i>
+                    </div>
+                    <h2 class="welcome-title">Selamat Datang di Portal Kearifan Lokal Indonesia</h2>
+                    <p class="welcome-text">
+                        Indonesia adalah negara dengan kekayaan budaya yang luar biasa. Setiap wilayah memiliki kearifan lokal yang unik dan bernilai tinggi. 
+                        Pilih salah satu wilayah di peta untuk memulai eksplorasi Anda.
+                    </p>
+                    <div class="welcome-images">
+                        <div class="welcome-image-item">
+                            <img src="https://indonesiajuara.asia/wp-content/uploads/2023/11/raja-ampat_11zon.webp" 
+                                 alt="Budaya Indonesia" 
+                                 loading="lazy"
+                                 width="3840"
+                                 height="2160">
+                            <p class="image-caption">Keindahan Alam dan Budaya Nusantara</p>
+                        </div>
+                        <div class="welcome-image-item">
+                            <img src="https://dragongraff.com/wp-content/uploads/2024/06/Tradisi-Ragam-Adat-Suku-di-Indonesia.jpg" 
+                                 alt="Tradisi Indonesia" 
+                                 loading="lazy"
+                                 width="3869"
+                                 height="2579">
+                            <p class="image-caption">Ragam Tradisi yang Tetap Lestari</p>
+                        </div>
+                    </div>
+                    <div class="welcome-tip">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Tips: Anda juga bisa menggunakan navigasi di samping untuk langsung menuju ke wilayah tertentu</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Navigation HD -->
+        <section class="quick-nav-section">
+            <div class="section-header">
+                <h2 class="section-title">Jelajahi Cepat</h2>
+                <p class="section-subtitle">Klik untuk langsung menuju ke wilayah tertentu</p>
+            </div>
+            
+            <div class="quick-nav-container">
+                <div class="region-card" data-region="sumatera-barat">
+                    <div class="region-card-image">
+                        <img src="https://www.ruparupa.com/blog/wp-content/uploads/2020/10/Screen-Shot-2020-10-05-at-11.01.27-1024x668.png" 
+                             alt="Sumatera Barat" 
+                             loading="lazy"
+                             width="3870"
+                             height="2580">
+                        <div class="image-overlay"></div>
+                    </div>
+                    <div class="region-card-content">
+                        <div class="region-card-icon">
+                            <i class="fas fa-mosque"></i>
+                        </div>
+                        <h3 class="region-card-title">Sumatera Barat</h3>
+                        <p class="region-card-desc">Rumah Gadang & Sistem Matrilineal</p>
+                    </div>
+                </div>
+                
+                <div class="region-card" data-region="yogyakarta">
+                    <div class="region-card-image">
+                        <img src="https://temanimuwisata.com/wp-content/uploads/2025/01/keraton-yogyakarta.jpg" 
+                             alt="Yogyakarta" 
+                             loading="lazy"
+                             width="4032"
+                             height="3024">
+                        <div class="image-overlay"></div>
+                    </div>
+                    <div class="region-card-content">
+                        <div class="region-card-icon">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <h3 class="region-card-title">Yogyakarta</h3>
+                        <p class="region-card-desc">Keraton & Filosofi Sumbu Filosofi</p>
+                    </div>
+                </div>
+                
+                <div class="region-card" data-region="bali">
+                    <div class="region-card-image">
+                        <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=4032&auto=format&fit=crop" 
+                             alt="Bali" 
+                             loading="lazy"
+                             width="4032"
+                             height="3024">
+                        <div class="image-overlay"></div>
+                    </div>
+                    <div class="region-card-content">
+                        <div class="region-card-icon">
+                            <i class="fas fa-water"></i>
+                        </div>
+                        <h3 class="region-card-title">Bali</h3>
+                        <p class="region-card-desc">Tri Hita Karana & Sistem Subak</p>
+                    </div>
+                </div>
+                
+                <div class="region-card" data-region="toraja">
+                    <div class="region-card-image">
+                        <img src="https://www.ruparupa.com/blog/wp-content/uploads/2022/02/toraja-houses-1500.jpg" 
+                             alt="Toraja" 
+                             loading="lazy"
+                             width="3858"
+                             height="2572">
+                        <div class="image-overlay"></div>
+                    </div>
+                    <div class="region-card-content">
+                        <div class="region-card-icon">
+                            <i class="fas fa-mountain"></i>
+                        </div>
+                        <h3 class="region-card-title">Toraja</h3>
+                        <p class="region-card-desc">Tongkonan & Rambu Solo'</p>
+                    </div>
+                </div>
+                
+                <div class="region-card" data-region="papua">
+                    <div class="region-card-image">
+                        <img src="https://i.pinimg.com/originals/29/92/9f/29929fd06ad782782328bd3079235d5b.jpg" 
+                             alt="Papua" 
+                             loading="lazy"
+                             width="3870"
+                             height="2580">
+                        <div class="image-overlay"></div>
+                    </div>
+                    <div class="region-card-content">
+                        <div class="region-card-icon">
+                            <i class="fas fa-feather-alt"></i>
+                        </div>
+                        <h3 class="region-card-title">Papua</h3>
+                        <p class="region-card-desc">Noken & Sistem Sasi</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Detail Kearifan Lokal HD -->
+    <div class="modal-overlay" id="modal-overlay"></div>
+    <div class="modal-container" id="modal-container">
+        <button class="modal-close" id="modal-close">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="modal-content" id="modal-content">
+            <!-- Konten modal akan dimuat di sini -->
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="back-to-top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h3>Kearifan Lokal Indonesia</h3>
+                <p>Melestarikan Warisan Budaya Nusantara</p>
+            </div>
+            
+            <div class="footer-links">
+                <div class="footer-nav">
+                    <h4>Wilayah</h4>
+                    <ul>
+                        <li><a href="#" data-region="sumatera-barat">Sumatera Barat</a></li>
+                        <li><a href="#" data-region="yogyakarta">Yogyakarta</a></li>
+                        <li><a href="#" data-region="bali">Bali</a></li>
+                        <li><a href="#" data-region="toraja">Toraja</a></li>
+                        <li><a href="#" data-region="papua">Papua</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h4>Kontak</h4>
+                    <p><i class="fas fa-envelope"></i> info@kearifanlokal.id</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Kearifan Lokal Indonesia. Semua Hak Dilindungi.</p>
+            <p class="hd-badge">✨ Peta Interaktif | Video HD | Gambar 4K | Optimized for Performance</p>
+        </div>
+    </footer>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Script utama -->
+    <script src="script.js"></script>
+</body>
+</html>
